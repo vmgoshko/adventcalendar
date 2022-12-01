@@ -1,5 +1,0 @@
-export var data = {
-	"katya" : "{ x : 1 }",
-	"lida" : "{ x : 2 }",
-	"masha" : "{ x : 3 }",
-};

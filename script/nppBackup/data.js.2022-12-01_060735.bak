@@ -1,6 +1,0 @@
-var data = new Map([
-        ["katya", 2],
-        ["lida", 3],
-        ["masha", 5],
-		["natasha", 7]
-    ]);
