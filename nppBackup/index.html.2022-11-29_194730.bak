@@ -1,0 +1,14 @@
+<html>
+	<script>
+		window.onload = ()=> {
+			const svgObject = document.getElementById('calendar');
+			const svg = svgObject.contentDocument;
+			var pipe = svg.getElementById('Pipe');
+			pipe.addEventListener('click', function(e) { console.log(e.currentTarget); });
+		};
+	
+	</script>
+	<body bgcolor="#212148">
+		<object data="calendar.svg" type="image/svg+xml" id="calendar" width="100%" height="100%"></object>
+	</body>
+</html>

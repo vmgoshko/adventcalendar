@@ -1,0 +1,12 @@
+var data = {
+	"katya" : "{ x : 1 }",
+	"lida" : "{ x : 2 }",
+	"masha" : "{ x : 3 }",
+};
+
+var data = new Map([
+        ["katya", 2],
+        ["lida", 3],
+        ["masha", 5],
+		["natasha", 7]
+    ]);

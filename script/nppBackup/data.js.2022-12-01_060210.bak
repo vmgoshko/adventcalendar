@@ -1,0 +1,9 @@
+var data = {
+	"katya" : "{ x : 1 }",
+	"lida" : "{ x : 2 }",
+	"masha" : "{ x : 3 }",
+};
+
+export function GetData(usr) {
+	return data.item(usr.toLowerCase())
+}

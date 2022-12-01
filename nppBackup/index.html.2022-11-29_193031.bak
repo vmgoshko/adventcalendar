@@ -1,0 +1,8 @@
+<html>
+	<script>
+		document.getElementById('circle2').addEventListener('click', function(e) { e.currentTarget.setAttribute('fill', '#ff00cc'); });
+	</script>
+	<body bgcolor="#212148">
+		<object data="calendar.svg" type="image/svg+xml" id="imap" width="100%" height="100%"></object>
+	</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+	<body bgcolor="#212148">
+		<object data="https://svgur.com/s/oTx" type="image/svg+xml" id="calendar_obj" height="100%"></object>
+		<script>
+			
+			window.onload = function() {
+				var calendar = document.getElementById("calendar_obj");
+				
+			}
+			
+			
+		</script>
+	</body>
+</html>

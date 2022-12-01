@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<body bgcolor="#212148">
+		<object data="calendar.svg" type="image/svg+xml" id="calendar_obj" height="100%"></object>
+		<script>
+			var calendarContent;
+			var windows;
+			var openedWindow;
+			
+			window.onload = function() {
+				calendarContent = document.getElementById("calendar_obj").contentDocument;
+				windows = calendarContent.querySelectorAll('[id^="Window"]');
+				openedWindow = calendarContent.querySelector('[id="Window_Opened"]');
+				
+				windows.forEach(function(currentValue, currentIndex, listObj) {
+					currentValue.addEventListener("click", OnWindowClicked, false);
+				});
+			}
+			
+			function OnWindowClicked(e){
+				var clickedWindowBBox = e.currentTarget.getBBox();
+				
+			}
+			
+			
+		</script>
+	</body>
+</html>

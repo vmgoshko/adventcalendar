@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<body bgcolor="#212148">
+		<object data="calendar.svg" type="image/svg+xml" id="calendar_obj" height="100%"></object>
+		<script>
+			
+			window.onload = function() {
+				var calendar = document.getElementById("calendar_obj");
+				var calendarContent = calendar.contentDocument;
+				var windows = calendarContent.querySelectorAll('[id^="Window"]');
+				
+				windows.forEach(function(currentValue, currentIndex, listObj) {
+					currentValue.addEventListener("click", doSomething, false);
+				});
+			}
+			
+			function doSomething(e){
+				e.currentTarget.class = "st0";
+			}
+		</script>
+	</body>
+</html>

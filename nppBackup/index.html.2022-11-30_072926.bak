@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<style>
+		html, body {
+		  margin: 5px;
+		}
+
+		object { 
+		}
+	</style>
+	<body bgcolor="#212148">
+		<object data="calendar.svg" type="image/svg+xml" id="calendar_obj" width="100%" height="100%" style="margin: auto"></object>
+		<script>
+			var calendarContent;
+			var windows;
+			var windowsSvgRoot;
+			var openedWindow;
+			
+			window.onload = function() {
+				calendarContent = document.getElementById("calendar_obj").contentDocument;
+				openedWindow = calendarContent.querySelector('[id="Opened_Window"]');
+				windowsSvgRoot = calendarContent.querySelector('[id="All_Windows"]');
+				
+				windows = calendarContent.querySelectorAll('[id^="Window"]');
+				windows.forEach(function(currentValue, currentIndex, listObj) {
+					currentValue.addEventListener("click", OnWindowClicked, false);
+					currentValue.addEventListener("mouseenter", OnWindowEnter, false);
+					currentValue.addEventListener("mouseleave", OnWindowLeave, false);
+					
+				});
+				
+				
+			}
+			
+			function OnWindowEnter(e) {
+				var light = e.currentTarget.getElementsByClassName("st25");
+				light[0].classList.replace("st25", "stLightsOn");
+			}
+			
+			function OnWindowLeave(e) {
+				var light = e.currentTarget.getElementsByClassName("stLightsOn");
+				light[0].classList.replace("stLightsOn", "st25");
+			}
+			
+			function OnWindowClicked(e){
+				var openedCloneId = "Opened_" + e.currentTarget.id;
+				if (windowsSvgRoot.querySelector("[id=" + openedCloneId + "]"))
+					return;
+					
+				var openedClone = openedWindow.cloneNode(true);
+				openedClone.id = openedCloneId;
+				
+				windowsSvgRoot.appendChild(openedClone);
+				openedClone.classList.remove("st0");
+				
+				var clickedCenter = GetElementCenter(e.currentTarget);
+				var openedCenter = GetElementCenter(openedClone);
+				
+				var deltaX = clickedCenter.x - openedCenter.x;
+				var deltaY = clickedCenter.y - openedCenter.y;
+				
+				
+				var transformValue = "translate(" + deltaX + "," + deltaY + ")";
+				openedClone.setAttribute('transform', transformValue);
+			}
+			
+			function GetElementCenter(el) {
+				var bbox = el.getBBox();
+				var pt = {
+					x : bbox.x + bbox.width / 2,
+					y : bbox.y + bbox.height / 2
+				};
+				
+				return pt;
+			}
+			
+			
+		</script>
+	</body>
+</html>
