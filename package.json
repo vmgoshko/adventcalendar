@@ -2,12 +2,13 @@
   "name": "advent-calendar",
   "version": "1.0.0",
   "description": "\"# adventcalendar\"",
-  "main": "index.js",
+  "main": "src/server.js",
   "directories": {
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+	"start": "node ."
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,8 @@
   },
   "homepage": "https://github.com/vmgoshko/adventcalendar#readme",
   "dependencies": {
-    "express": "^4.18.2"
+    "chalk": "^4.1.2",
+    "express": "^4.18.2",
+    "morgan": "^1.10.0"
   }
 }
