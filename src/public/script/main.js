@@ -1,6 +1,6 @@
 var svgElements = {};
 var cache = {
-	usr : "test",
+	name : "",
 	openedWindows : []
 };
 
@@ -8,66 +8,105 @@ var day2text = new Map([]);
 
 window.onload = function() {
 	svgElements.calendarContent = document.querySelector('#calendar_obj').contentDocument;
+	svgElements.message = svgElements.calendarContent.querySelector('#Message');
 	svgElements.openedWindow = svgElements.calendarContent.querySelector('#Opened_Window');
 	svgElements.windowsSvgRoot = svgElements.calendarContent.querySelector('#All_Windows');
 	svgElements.cat = svgElements.calendarContent.querySelector('#Cat');
 	svgElements.catVerb = svgElements.calendarContent.querySelector('#Cat_Verb');
 	
+	svgElements.message.classList.add("st0");
 	svgElements.windows = svgElements.calendarContent.querySelectorAll('[id^="Window"]');
 	svgElements.windows.forEach(function(currentValue, currentIndex, listObj) {
-		currentValue.addEventListener("click", OnWindowClicked, false);
+		currentValue.addEventListener("click", OnWindowClicked, true);
 		currentValue.addEventListener("mouseenter", OnWindowEnter, false);
 		currentValue.addEventListener("mouseleave", OnWindowLeave, false);
 	});
 	
 	svgElements.cat.addEventListener("click", OnCatClicked, false);
-	
+	svgElements.calendarContent.addEventListener("click", OnSvgClicked, false);
 	RestoreCache();
-	cache.usr = "test";
 	LoadData();
 }
 
 function LoadData() {
-	// if( cache.usr == "" )
-		// return;
-	
-	// var jsonData = data.get(cache.usr);
-	// //var dataObj = JSON.parse(jsonData);
-	
-}
+	$.get('getdata', {name : cache.name}, 
+		function (data){
+			dataObj = JSON.parse(data);
+			if(!dataObj)
+				return;
+			
+			dataObj.forEach(item => {day2text.set(item.day, { title : item.title, text : item.text })});
+		});
+	}
 
 function OnWindowEnter(e) {
 	var light = e.currentTarget.getElementsByClassName("st26");
 	if (light.length == 0)
 		return;
 		
-	light[0].classList.replace("st26", "st39");
+	light[0].classList.replace("st26", "st38");
 }
 
 function OnWindowLeave(e) {
-	var light = e.currentTarget.getElementsByClassName("st39");
+	var light = e.currentTarget.getElementsByClassName("st38");
 	if (light.length == 0 || light[0].parentElement.parentElement.id.startsWith("Opened"))
 		return;
 		
-	light[0].classList.replace("st39", "st26");
+	light[0].classList.replace("st38", "st26");
 }
-
 
 function OnCatClicked(e){
 	svgElements.catVerb.classList.remove("st0");
 }
 
+function ShowMessage(day) {
+	var dayData = day2text.get(day);
+	
+	var title = svgElements.message.querySelector("#Title");
+	var text = svgElements.message.querySelector("#Text");
 
-function OnWindowClicked(e){
-	OpenWindow(e.currentTarget);
+	title.innerHTML = dayData.title;
+	text.innerHTML = dayData.text;
+
+	svgElements.message.classList.remove("st0");
 }
 
-function OpenWindow(wnd) {
+function OnOpenedWindowClicked(e) {
+	e.stopPropagation();
+	var wnd = e.currentTarget;
+	var dayStr = wnd.id.substr("opened_window".length);
+	var day = parseInt(dayStr);
+	if (!day2text.has(day))
+		return;
+
+	ShowMessage(day);
+}
+
+function OnSvgClicked(e) {
+	if(!svgElements.message.classList.contains("st0"))
+		svgElements.message.classList.add("st0");
+}
+
+function OnWindowClicked(e){
+	if (!svgElements.message.classList.contains("st0"))
+		return;
+
+	e.stopPropagation();
+	var wnd = e.currentTarget;
+	OpenWindow(wnd);
+	var day = parseInt(wnd.id.substr("window".length));
+	if (!day2text.has(day))
+		return;
+
+	ShowMessage(day);
+}
+
+function OpenWindow(wnd, firstTime) {
 	if (!wnd)
 		return;
 		
 	var openedCloneId = "Opened_" + wnd.id;
-	if (svgElements.windowsSvgRoot.querySelector("[id=" + openedCloneId + "]"))
+	if (svgElements.windowsSvgRoot.querySelector("#" + openedCloneId))
 		return;
 		
 	var openedClone = svgElements.openedWindow.cloneNode(true);
@@ -77,6 +116,7 @@ function OpenWindow(wnd) {
 	openedClone.classList.remove("st0");
 	openedClone.addEventListener("mouseenter", OnWindowEnter, false);
 	openedClone.addEventListener("mouseleave", OnWindowLeave, false);
+	openedClone.addEventListener("click", OnOpenedWindowClicked, false);
 		
 	StoreCache(wnd);
 	
@@ -103,25 +143,23 @@ function GetElementCenter(el) {
 }
 
 function StoreCache(wnd) {
-	if (wnd == undefined)
-		return;
-		
-	if (cache.openedWindows.find(el => (el == wnd.id).length > 0))
-		return;
-		
-	cache.openedWindows.push(wnd.id);
+	if (wnd && cache.openedWindows.indexOf(wnd.id) < 0)
+		cache.openedWindows.push(wnd.id);
 	
-	var json = JSON.stringify(cache);
-	document.cookie = json + ";max-age="+(3600 * 24 * 7) + ";SameSite=None";
+	const json = JSON.stringify(cache);
+	document.cookie = json + ";max-age="+(3600 * 24 * 7) + ";SameSite=None; Secure";
 }
 
 function RestoreCache() {
-	if (document.cookie == "")
-		return;
-	cache = JSON.parse(document.cookie);
-	
-	if (cache.openedWindows.length == 0)
-		return;
-	
-	cache.openedWindows.forEach(wnd => OpenWindow(svgElements.calendarContent.getElementById(wnd)));
+	if (document.cookie) { 
+		cache = JSON.parse(document.cookie);
+		if (cache.openedWindows.length > 0)
+			cache.openedWindows.forEach(wnd => OpenWindow(svgElements.calendarContent.getElementById(wnd)));
+	}
+	else {
+		const urlParams = new URLSearchParams(window.location.search); 
+		cache.name = urlParams?.get("name");
+		if (cache.name)
+			StoreCache(undefined);
+	}
 }

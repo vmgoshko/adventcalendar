@@ -1,20 +1,84 @@
 <!DOCTYPE html>
 <html>
-	<link rel="apple-touch-icon" sizes="180x180" href="res/apple-touch-icon.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="res/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="res/favicon-16x16.png">
-	<link rel="manifest" href="res/site.webmanifest">
-	<meta name="viewport" content="width=device-width, initial-scale=1.00, maximum-scale=2.00, minimum-scale=1.00">
-	<meta charset="UTF-8">
-	<style>
-		html, body, object {
-		  height: 98%;
-		  width: 98%;
-		}
-	</style>
-	<body bgcolor="#212148">
-		<object data="res/Calendar.svg" type="image/svg+xml" id="calendar_obj" width="100%" height="100%" style="margin: auto"></object>
-		<script type="text/javascript" src="script/data.js"></script>
-		<script type="text/javascript" src="script/main.js"></script>
-	</body>
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Montserrat);
+
+        * {margin: 0; padding: 0;}
+
+        html {
+            height: 100%;
+            background: 
+                linear-gradient(#D9741F, #8A3D25);
+        }
+
+        body {
+            font-family: montserrat, arial, verdana;
+        }
+        /*form styles*/
+        #nameform {
+            width: 400px;
+            margin: 50px auto;
+            text-align: center;
+            position: relative;
+        }
+        #nameform fieldset {
+            background: #D9741F;
+            border: 0 none;
+            border-radius: 3px;
+            box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+            padding: 20px 30px;
+            box-sizing: border-box;
+            width: 80%;
+            margin: 0 10%;
+        }
+        
+        /*inputs*/
+        #nameform input, #nameform textarea {
+            padding: 15px;
+            background-color: #e6bfa0;
+            border: 1px solid #8A3D25;
+            border-radius: 3px;
+            margin-bottom: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            font-family: montserrat;
+            color: #8A3D25;
+            font-size: 13px;
+        }
+        input[type=text]:focus {
+            outline: none;      /* Remove default outline and use border or box-shadow */
+            box-shadow: 0 0 0 2px #8A3D25; /* Full freedom. (works also with border-radius) */
+        }
+        /*buttons*/
+        #nameform .action-button {
+            width: 100px;
+            background: #512b0c;
+            font-weight: bold;
+            color: white;
+            border: 0 none;
+            border-radius: 1px;
+            cursor: pointer;
+            padding: 10px 5px;
+            margin: 10px 5px;
+        }
+        #nameform .action-button:hover, #nameform .action-button:focus {
+            box-shadow: 0 0 0 2px #e6bfa0;
+        }
+        /*headings*/
+        .title {
+            font-size: 15px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+
+    </style>    
+    <body>
+        <form id="nameform" action="/nameSubmit" method="POST">
+        <fieldset>
+            <h2 class="title">Введите свое имя</h2>
+            <input type="text" name="name" placeholder="Имя" />
+        </form>
+        <input type="submit" name="submit" class="submit action-button" value="OK" />
+    </body>
 </html>
