@@ -1,3 +1,5 @@
+$.getScript("https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.2/svg.min.js");
+
 var svgElements = {};
 var cache = {
 	name : "",
@@ -14,7 +16,7 @@ window.onload = function() {
 	svgElements.cat = svgElements.calendarContent.querySelector('#Cat');
 	svgElements.catVerb = svgElements.calendarContent.querySelector('#Cat_Verb');
 	
-	svgElements.message.classList.add("st0");
+	svgElements.message.classList.add("hidden");
 	svgElements.windows = svgElements.calendarContent.querySelectorAll('[id^="Window"]');
 	svgElements.windows.forEach(function(currentValue, currentIndex, listObj) {
 		currentValue.addEventListener("click", OnWindowClicked, true);
@@ -56,19 +58,20 @@ function OnWindowLeave(e) {
 }
 
 function OnCatClicked(e){
-	svgElements.catVerb.classList.remove("st0");
+	svgElements.catVerb.classList.remove("hidden");
 }
 
 function ShowMessage(day) {
 	var dayData = day2text.get(day);
 	
 	var title = svgElements.message.querySelector("#Title");
+	var textRect = svgElements.message.querySelector("#TextRect")
 	var text = svgElements.message.querySelector("#Text");
 
 	title.innerHTML = dayData.title;
 	text.innerHTML = dayData.text;
-
-	svgElements.message.classList.remove("st0");
+	
+	svgElements.message.classList.remove("hidden");
 }
 
 function OnOpenedWindowClicked(e) {
@@ -83,12 +86,12 @@ function OnOpenedWindowClicked(e) {
 }
 
 function OnSvgClicked(e) {
-	if(!svgElements.message.classList.contains("st0"))
-		svgElements.message.classList.add("st0");
+	if(!svgElements.message.classList.contains("hidden"))
+		svgElements.message.classList.add("hidden");
 }
 
 function OnWindowClicked(e){
-	if (!svgElements.message.classList.contains("st0"))
+	if (!svgElements.message.classList.contains("hidden"))
 		return;
 
 	e.stopPropagation();
@@ -113,7 +116,7 @@ function OpenWindow(wnd, firstTime) {
 	openedClone.id = openedCloneId;
 	
 	svgElements.windowsSvgRoot.appendChild(openedClone);
-	openedClone.classList.remove("st0");
+	openedClone.classList.remove("hidden");
 	openedClone.addEventListener("mouseenter", OnWindowEnter, false);
 	openedClone.addEventListener("mouseleave", OnWindowLeave, false);
 	openedClone.addEventListener("click", OnOpenedWindowClicked, false);
@@ -147,7 +150,7 @@ function StoreCache(wnd) {
 		cache.openedWindows.push(wnd.id);
 	
 	const json = JSON.stringify(cache);
-	document.cookie = json + ";max-age="+(3600 * 24 * 7) + ";SameSite=None; Secure";
+	document.cookie = json + ";max-age=" + (3600 * 24 * 7) + ";SameSite=None; Secure";
 }
 
 function RestoreCache() {

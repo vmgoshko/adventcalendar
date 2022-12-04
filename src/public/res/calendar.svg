@@ -1,57 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 25.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Image" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 469 387.151062" style="enable-background:new 0 0 469 387.151062;" xml:space="preserve">
-<style type="text/css">
-	.st0{display:none;}
-	.st1{display:inline;fill:#212148;}
-	.st2{fill:#D9741F;}
-	.st3{fill:#DE6511;}
-	.st4{fill:#CCBEB6;}
-	.st5{fill:#FEF5F1;}
-	.st6{fill:#E8376D;}
-	.st7{fill:#D01F60;}
-	.st8{fill:#FBE3EF;}
-	.st9{fill:#009E4A;}
-	.st10{fill:#009640;}
-	.st11{fill:#DFF0EB;}
-	.st12{fill:#554898;}
-	.st13{fill:#4A3E91;}
-	.st14{fill:#CFC0DF;}
-	.st15{fill:#BD5E23;}
-	.st16{fill:#603128;}
-	.st17{fill:#F5BB0F;}
-	.st18{fill:#E58621;}
-	.st19{fill:#FFF2D3;}
-	.st20{fill:#C4651F;}
-	.st21{fill:#8A3D25;}
-	.st22{fill:#C6BCB4;}
-	.st23{fill:#FFF6F0;}
-	.st24{fill:#9C385D;}
-	.st25{fill:#E8376E;}
-	.st26{fill:#9F3B1F;}
-	.st27{fill:#FCDBCD;}
-	.st28{fill:#E8376E;stroke:#FCDBCD;stroke-miterlimit:10;}
-	.st29{fill:#FCFCFC;}
-	.st30{font-family:'InkFree';}
-	.st31{font-size:23.3717232px;}
-	.st32{fill:#6D6B6B;}
-	.st33{opacity:0.36;fill:#FCDBCD;enable-background:new    ;}
-	.st34{fill:#FFFFFF;}
-	.st35{font-family:'Candara';}
-	.st36{font-size:9px;}
-	.st37{fill:none;stroke:#FFFFFF;stroke-width:0.25;stroke-miterlimit:10;}
-	.st38{fill:#F9B148;}
-	.st39{fill:#FCDBCE;}
-	.st40{fill:#E94E1B;}
-	.st41{fill:#E94F1C;}
-	.st42{fill:#D3B47D;}
-	.st43{fill:#DEBF86;}
-	.st44{fill:#887249;}
-	.st45{fill:#8A3D25;stroke:#8A3D25;stroke-miterlimit:10;}
-	.st46{font-size:23px;}
-	.st47{fill:none;}
-</style>
+<svg version="1.1" id="Image" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 469 387.151062" style="enable-background:new 0 0 469 387.151062;" xml:space="preserve">
+<defs>
+    <style type="text/css">
+		.hidden{display:none;}
+		.st1{display:inline;fill:#212148;}
+		.st2{fill:#D9741F;}
+		.st3{fill:#DE6511;}
+		.st4{fill:#CCBEB6;}
+		.st5{fill:#FEF5F1;}
+		.st6{fill:#E8376D;}
+		.st7{fill:#D01F60;}
+		.st8{fill:#FBE3EF;}
+		.st9{fill:#009E4A;}
+		.st10{fill:#009640;}
+		.st11{fill:#DFF0EB;}
+		.st12{fill:#554898;}
+		.st13{fill:#4A3E91;}
+		.st14{fill:#CFC0DF;}
+		.st15{fill:#BD5E23;}
+		.st16{fill:#603128;}
+		.st17{fill:#F5BB0F;}
+		.st18{fill:#E58621;}
+		.st19{fill:#FFF2D3;}
+		.st20{fill:#C4651F;}
+		.st21{fill:#8A3D25;}
+		.st22{fill:#C6BCB4;}
+		.st23{fill:#FFF6F0;}
+		.st24{fill:#9C385D;}
+		.st25{fill:#E8376E;}
+		.st26{fill:#9F3B1F;}
+		.st27{fill:#FCDBCD;}
+		.st28{fill:#E8376E;stroke:#FCDBCD;stroke-miterlimit:10;}
+		.st29{fill:#FCFCFC;}
+		.st30{font-family:'InkFree';}
+		.st31{font-size:23.3717232px;}
+		.st32{fill:#6D6B6B;}
+		.st33{opacity:0.36;fill:#FCDBCD;enable-background:new    ;}
+		.st34{fill:#FFFFFF;}
+		.st35{font-family:'Candara';}
+		.st36{font-size:9px;}
+		.st37{fill:none;stroke:#FFFFFF;stroke-width:0.25;stroke-miterlimit:10;}
+		.st38{fill:#F9B148;}
+		.st39{fill:#FCDBCE;}
+		.st40{fill:#E94E1B;}
+		.st41{fill:#E94F1C;}
+		.st42{fill:#D3B47D;}
+		.st43{fill:#DEBF86;}
+		.st44{fill:#887249;}
+		.st47{fill:none;}
+
+		#Title {
+			color: #8A3D25;
+			text-align: center;
+			font-size: 23px;
+			width: 145px;
+			height: 50px;
+			overflow-y: auto;
+		}
+		
+		#Text {
+			width: 150px; 
+			height: 180px; 
+			text-align: center; 
+			overflow-y: auto"
+		}
+	</style>
+</defs>
 <g id="Full_house">
 	<g id="Pipe">
 		<g>
@@ -799,7 +813,7 @@
 			</g>
 		</g>
 	</g>
-	<g id="Cat_Verb" class="st0">
+	<g id="Cat_Verb" class="hidden">
 		<path id="Cloud" class="st28" d="M140.3000031,35.651062c-1.1000061,5.5999985-6,9.7999992-11.8999939,9.7999992
 			c-2.1999969,2.5999985-5.5999985,4.2999992-9.3000031,4.2999992c-2.0999985,0-4.1999969-0.5999985-5.9000015-1.5
 			c-2.0999985,1.7999992-4.9000015,2.9000015-7.9000015,2.9000015c-3.4000015,0-6.5-1.4000015-8.6999969-3.7000008
@@ -3094,7 +3108,7 @@
 		</g>
 	</g>
 </g>
-<g id="Opened_Window" class="st0">
+<g id="Opened_Window" class="hidden">
 	<g>
 		<path class="st38" d="M93.7000198,140.6475983L93.7000198,140.6475983c-6.1999969,0-11.3000031,5.1000061-11.3000031,11.3000031
 			v13.1999969h22.5999985v-13.1999969C105.0000229,145.7475891,99.9000244,140.6475983,93.7000198,140.6475983z"/>
@@ -3750,8 +3764,12 @@
 		c0.0395813-0.5167084,0.1115112-1.0332642,0.1138611-1.5501404c0.0301514-6.5876465,0.0562744-13.1753235,0.0710144-19.763031
 		c0.0100708-4.5032043,0.0024719-9.0064392-0.003418-13.5096741
 		C337.2469177,137.1630707,337.197998,136.8066254,337.1677856,136.3986969z"/>
-	<text id="Title" transform="matrix(1 0 0 1 184.6717682 109.6030502)" class="st45 st30 st46"></text>
-	<rect x="159.1880951" y="127.5106354" class="st47" width="150.6238098" height="177.1533203"/>
-	<text id="Text" transform="matrix(1 0 0 1 159.7751312 144.9213867)"></text>
+
+	<foreignObject x="165" y="80" width="145" height="172">
+    	<div id="Title" xmlns="http://www.w3.org/1999/xhtml"></div>
+  	</foreignObject>
+	<foreignObject x="160" y="128" width="150" height="180">
+    	<div id="Text" xmlns="http://www.w3.org/1999/xhtml"></div>
+  	</foreignObject>
 </g>
 </svg>

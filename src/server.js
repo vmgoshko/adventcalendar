@@ -5,6 +5,7 @@ var path = require('path');
 var url = require('url');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
+var favicon = require('serve-favicon');
 
 // own files
 var tools = require('./tools');
@@ -14,6 +15,7 @@ var app = express();
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(favicon(path.join(__dirname,'public','res','favicon.ico')));
 
 app.set('port', process.env.PORT || 8000);  
 
