@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.00, maximum-scale=2.00, minimum-scale=1.00">
 	<link rel="apple-touch-icon" sizes="180x180" href="res/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="res/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="res/favicon-16x16.png">
 	<link rel="manifest" href="res/site.webmanifest">
-	<meta name="viewport" content="width=device-width, initial-scale=1.00, maximum-scale=2.00, minimum-scale=1.00">
-	<meta charset="UTF-8">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<style>
 		html, body, object {
 		  height: 98%;
 		  width: 98%;
-		}
-		body {
-			background-color: #212148;
+			background: linear-gradient(#39398f, #212148);
 		}
 		#canvas {
 			height: 98%;
-		  	width: 98%;	
+		  	width: 98%;
+			display: block;
+			margin: auto;
 		}
 	</style>
 	<body>
 		<div id="canvas">
-			<object data="res/calendar.svg" type="image/svg+xml" id="calendar_obj"></object>
+			<object data="res/calendar.svg" type="image/svg+xml" style="display: block;" id="calendar_obj"></object>
 		</div>
 		<script type="text/javascript" src="script/main.js"></script>
 	</body>
