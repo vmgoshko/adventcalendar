@@ -4,7 +4,7 @@ var fs = require('fs');
 
 module.exports = {
     GetData : function(usr) {
-        const dataFilePath = path.join(__dirname, "public", "data", usr.toLowerCase() + ".txt");
+        const dataFilePath = path.join(__dirname, "public", "data", usr.toLowerCase().trim() + ".txt");
         if (fs.existsSync(dataFilePath))
             return dataFilePath;
         
