@@ -29,8 +29,8 @@ async function loadSvgs() {
     RestoreCache();
     LoadData();
 
-    SnowFall3();
-    SnowFX.startFireworks();
+    SnowFall2();
+    // SnowFX.startFireworks();
 
     document.body.style.visibility = "visible";
 }
@@ -139,9 +139,6 @@ function OnDayClicked(e) {
     const day = parseInt(dayEl.id.replace("Day_", ""), 10);
 
     if (day > maxOpenedDay + 1) return;
-
-    if (day == 14)
-        svgElements.happyNewYear.classList.remove('hidden');
 
     OpenDay(dayEl);
 
@@ -526,6 +523,9 @@ function SnowFall3() {
 function OpenDay(dayEl, force = false) {
     if (!dayEl) return;
 
+    if (dayEl.id == "Day_14")
+        svgElements.happyNewYear.classList.remove('hidden');
+
     dayEl.classList.remove("notvisited");
     HideNumber(dayEl);
     StoreCache(dayEl);
@@ -568,8 +568,8 @@ function RestoreCache() {
     cache.openedWindows.forEach(id => {
         const dayEl = svgElements.calendarContent.getElementById(id);
         if (dayEl) {
-            OpenDay(dayEl);
             maxOpenedDay = Math.max(maxOpenedDay, parseInt(id.replace("Day_", ""), 10));
+            OpenDay(dayEl);
         }
     });
 }
