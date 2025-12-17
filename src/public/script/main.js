@@ -1,168 +1,217 @@
 $.getScript("https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.2/svg.min.js");
 
-var svgElements = {};
-var cache = {
-	name : "",
-	openedWindows : []
+const svgElements = {};
+let cache = {
+    name: "",
+    openedWindows: []
 };
 
-var day2text = new Map([]);
+const day2text = new Map();
 
-window.onload = function() {
-	svgElements.calendarContent = document.querySelector('#calendar_obj').contentDocument;
-	svgElements.message = svgElements.calendarContent.querySelector('#Message');
-	svgElements.openedWindow = svgElements.calendarContent.querySelector('#Opened_Window');
-	svgElements.windowsSvgRoot = svgElements.calendarContent.querySelector('#All_Windows');
-	svgElements.cat = svgElements.calendarContent.querySelector('#Cat');
-	svgElements.catVerb = svgElements.calendarContent.querySelector('#Cat_Verb');
-	
-	svgElements.message.classList.add("hidden");
-	svgElements.windows = svgElements.calendarContent.querySelectorAll('[id^="Window"]');
-	svgElements.windows.forEach(function(currentValue, currentIndex, listObj) {
-		currentValue.addEventListener("click", OnWindowClicked, true);
-		currentValue.addEventListener("mouseenter", OnWindowEnter, false);
-		currentValue.addEventListener("mouseleave", OnWindowLeave, false);
-	});
-	
-	svgElements.cat.addEventListener("click", OnCatClicked, false);
-	svgElements.calendarContent.addEventListener("click", OnSvgClicked, false);
-	RestoreCache();
-	LoadData();
+/* =========================
+   INIT
+   ========================= */
+
+async function loadSvgs() {
+    document.body.style.visibility = "hidden";
+
+    const [calendarSvg, popupSvg] = await Promise.all([
+        fetch("res/calendar.svg").then(r => r.text()),
+        fetch("res/popup.svg").then(r => r.text())
+    ]);
+
+    document.getElementById("calendar_container").innerHTML = calendarSvg;
+    document.getElementById("popup_container").innerHTML = popupSvg;
+
+    initCalendarSvg();
+    initPopupSvg();
+
+    RestoreCache();
+    LoadData();
+
+    document.body.style.visibility = "visible";
 }
+
+loadSvgs().catch(console.error);
+
+/* =========================
+   CALENDAR
+   ========================= */
+
+function initCalendarSvg() {
+    svgElements.calendarContent = document.querySelector("svg#Calendar");
+    svgElements.daysSvgRoot = svgElements.calendarContent.querySelector("#AllDays");
+    svgElements.numbersSvgRoot = svgElements.calendarContent.querySelector("#Numbers");
+
+    svgElements.days = svgElements.calendarContent.querySelectorAll('[id^="Day_"]');
+    svgElements.days.forEach(day => {
+        day.classList.add("notvisited");
+        day.addEventListener("click", OnDayClicked, true);
+    });
+}
+
+/* =========================
+   POPUP
+   ========================= */
+
+function initPopupSvg() {
+    svgElements.messageContent = document.querySelector("svg#Message");
+
+    const popupContainer = document.getElementById("popup_container");
+    const popupSvg = document.getElementById("Message");
+
+    popupContainer.addEventListener("click", closePopup);
+}
+
+function openPopup() {
+    document.getElementById("popup_container").classList.add("open");
+}
+
+function closePopup() {
+    document.getElementById("popup_container").classList.remove("open");
+}
+
+/* =========================
+   DATA
+   ========================= */
 
 function LoadData() {
-	$.get('getdata', {name : cache.name}, 
-		function (data){
-			dataObj = JSON.parse(data);
-			if(!dataObj)
-				return;
-			
-			dataObj.forEach(item => {day2text.set(item.day, { title : item.title, text : item.text })});
-		});
-	}
+    $.get("getdata", { name: cache.name }, data => {
+        let dataObj;
+        try {
+            dataObj = JSON.parse(data);
+        } catch {
+            return;
+        }
 
-function OnWindowEnter(e) {
-	var light = e.currentTarget.getElementsByClassName("st26");
-	if (light.length == 0)
-		return;
-		
-	light[0].classList.replace("st26", "st38");
+        if (!Array.isArray(dataObj)) return;
+
+        dataObj.forEach(item => {
+            day2text.set(item.day, {
+                title: item.title,
+                text: item.text,
+                movieTitle: item.movie,
+                movieName: item.name
+            });
+        });
+    });
 }
 
-function OnWindowLeave(e) {
-	var light = e.currentTarget.getElementsByClassName("st38");
-	if (light.length == 0 || light[0].parentElement.parentElement.id.startsWith("Opened"))
-		return;
-		
-	light[0].classList.replace("st38", "st26");
-}
-
-function OnCatClicked(e){
-	svgElements.catVerb.classList.remove("hidden");
-}
+/* =========================
+   MESSAGE
+   ========================= */
 
 function ShowMessage(day) {
-	var dayData = day2text.get(day);
-	
-	var title = svgElements.message.querySelector("#Title");
-	var textRect = svgElements.message.querySelector("#TextRect")
-	var text = svgElements.message.querySelector("#Text");
+    const dayData = day2text.get(day);
+    if (!dayData) return;
 
-	title.innerHTML = dayData.title;
-	text.innerHTML = dayData.text;
-	
-	svgElements.message.classList.remove("hidden");
+    const title = svgElements.messageContent.querySelector("#Title");
+    const text = svgElements.messageContent.querySelector("#Text");
+    const movieTitle = svgElements.messageContent.querySelector("#MovieTitle");
+    const movieName = svgElements.messageContent.querySelector("#MovieName");
+
+    title.innerHTML = dayData.title;
+    text.innerHTML = dayData.text;
+    movieTitle.innerHTML = dayData.movieTitle;
+    movieName.innerHTML = dayData.movieName;
+
+    fitText(title, { min: 24, max: 36 });
+    fitText(text, { min: 10, max: 24 });
+    fitText(movieTitle, { min: 12, max: 20 });
+    fitText(movieName, { min: 20, max: 24 });
+
+    openPopup();
 }
 
-function OnOpenedWindowClicked(e) {
-	e.stopPropagation();
-	var wnd = e.currentTarget;
-	var dayStr = wnd.id.substr("opened_window".length);
-	var day = parseInt(dayStr);
-	if (!day2text.has(day))
-		return;
+/* =========================
+   DAYS
+   ========================= */
 
-	ShowMessage(day);
+function OnDayClicked(e) {
+    e.stopPropagation();
+
+    const dayEl = e.currentTarget;
+    const day = parseInt(dayEl.id.replace("Day_", ""), 10);
+
+    OpenDay(dayEl);
+
+    if (day2text.has(day)) {
+        ShowMessage(day);
+    }
 }
 
-function OnSvgClicked(e) {
-	if(!svgElements.message.classList.contains("hidden"))
-		svgElements.message.classList.add("hidden");
+function OpenDay(dayEl) {
+    if (!dayEl) return;
+
+    dayEl.classList.remove("notvisited");
+    HideNumber(dayEl);
+    StoreCache(dayEl);
 }
 
-function OnWindowClicked(e){
-	if (!svgElements.message.classList.contains("hidden"))
-		return;
-
-	e.stopPropagation();
-	var wnd = e.currentTarget;
-	OpenWindow(wnd);
-	var day = parseInt(wnd.id.substr("window".length));
-	if (!day2text.has(day))
-		return;
-
-	ShowMessage(day);
+function HideNumber(dayEl) {
+    const numId = "Num_" + dayEl.id.replace("Day_", "");
+    const number = svgElements.calendarContent.querySelector("#" + numId);
+    if (number) number.classList.add("hidden");
 }
 
-function OpenWindow(wnd, firstTime) {
-	if (!wnd)
-		return;
-		
-	var openedCloneId = "Opened_" + wnd.id;
-	if (svgElements.windowsSvgRoot.querySelector("#" + openedCloneId))
-		return;
-		
-	var openedClone = svgElements.openedWindow.cloneNode(true);
-	openedClone.id = openedCloneId;
-	
-	svgElements.windowsSvgRoot.appendChild(openedClone);
-	openedClone.classList.remove("hidden");
-	openedClone.addEventListener("mouseenter", OnWindowEnter, false);
-	openedClone.addEventListener("mouseleave", OnWindowLeave, false);
-	openedClone.addEventListener("click", OnOpenedWindowClicked, false);
-		
-	StoreCache(wnd);
-	
-	var clickedCenter = GetElementCenter(wnd);
-	var openedCenter = GetElementCenter(openedClone);
-	
-	var deltaX = clickedCenter.x - openedCenter.x;
-	var deltaY = clickedCenter.y - openedCenter.y;
-	
-	var transformValue = "translate(" + deltaX + "," + deltaY + ")";
-	openedClone.setAttribute('transform', transformValue);
-	
-	svgElements.windowsSvgRoot.removeChild(wnd);
-}
+/* =========================
+   CACHE
+   ========================= */
 
-function GetElementCenter(el) {
-	var bbox = el.getBBox();
-	var pt = {
-		x : bbox.x + bbox.width / 2,
-		y : bbox.y + bbox.height / 2
-	};
-	
-	return pt;
-}
+function StoreCache(dayEl) {
+    if (dayEl && !cache.openedWindows.includes(dayEl.id)) {
+        cache.openedWindows.push(dayEl.id);
+    }
 
-function StoreCache(wnd) {
-	if (wnd && cache.openedWindows.indexOf(wnd.id) < 0)
-		cache.openedWindows.push(wnd.id);
-	
-	const json = JSON.stringify(cache);
-	document.cookie = json + ";max-age=" + (3600 * 24 * 7) + ";SameSite=None; Secure";
+    localStorage.setItem("calendarCache", JSON.stringify(cache));
 }
 
 function RestoreCache() {
-	if (document.cookie) { 
-		cache = JSON.parse(document.cookie);
-		if (cache.openedWindows.length > 0)
-			cache.openedWindows.forEach(wnd => OpenWindow(svgElements.calendarContent.getElementById(wnd)));
-	}
-	else {
-		const urlParams = new URLSearchParams(window.location.search); 
-		cache.name = urlParams?.get("name");
-		if (cache.name)
-			StoreCache(undefined);
-	}
+    const saved = localStorage.getItem("calendarCache");
+    if (!saved) {
+        const params = new URLSearchParams(window.location.search);
+        cache.name = params.get("name") || "";
+        StoreCache();
+        return;
+    }
+
+    try {
+        cache = JSON.parse(saved);
+    } catch {
+        cache = { name: "", openedWindows: [] };
+    }
+
+    cache.openedWindows.forEach(id => {
+        const dayEl = svgElements.calendarContent.getElementById(id);
+        if (dayEl) {
+            OpenDay(dayEl);
+        }
+    });
+}
+
+/* =========================
+   FIT TEXT (BINARY)
+   ========================= */
+
+function fitText(el, { min = 12, max = 28 } = {}) {
+    let lo = min;
+    let hi = max;
+    let best = min;
+
+    while (lo <= hi) {
+        const mid = Math.floor((lo + hi) / 2);
+        el.style.fontSize = mid + "px";
+
+        if (
+            el.scrollWidth <= el.clientWidth &&
+            el.scrollHeight <= el.clientHeight
+        ) {
+            best = mid;
+            lo = mid + 1;
+        } else {
+            hi = mid - 1;
+        }
+    }
+
+    el.style.fontSize = best + "px";
 }

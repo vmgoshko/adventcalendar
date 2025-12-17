@@ -57,3 +57,9 @@ app.post('/nameSubmit', (req, res) => {
     
     res.redirect("/calendar?name=" + req.body.name);
   });
+
+app.post('/openDay', (req, res) => {
+    console.log("day opened");
+    
+    res.redirect("/calendar?name=" + req.body.name);
+  });
